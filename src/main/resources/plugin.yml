@@ -1,0 +1,31 @@
+name: Excillion_Game_Engine
+main: me.exerosis.game.engine.Main
+version: 9.0.0
+depend: [P-3058_Pipeline_Accelerator]
+depend: [IOAPI]
+depend: [SQLDatabases]
+commands:
+    game:
+    kits:
+    coins:
+permissions:
+    game.*:
+        description: Gives access to all game commands
+        children:
+            game.stop: true
+            game.start: true
+            game.pause: true
+            game.resume: true
+        default: op
+    game.stop:
+        description: Disables all components in the game **WARNING** (This might break games).
+        default: op
+    game.start:
+        description: Enables all components in the game **WARNING** (This might break games).
+        default: op
+    game.pause:
+        description: Freezes all players, and timers.
+        default: op
+    game.resume:
+        description: Unfreezes all paused players and timers.
+        default: op
