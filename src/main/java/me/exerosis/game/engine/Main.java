@@ -1,10 +1,9 @@
 package me.exerosis.game.engine;
 
-import me.exerosis.game.engine.componentgame.Arena;
-import me.exerosis.game.engine.componentgame.factory.RotatingGame;
-import me.exerosis.game.engine.componentgame.game.lms.DeathmatchGame;
-import me.exerosis.game.engine.componentgame.game.runner.RunnerGame;
-import me.exerosis.game.engine.componentgame.game.spleef.SpleefGame;
+import me.exerosis.game.engine.core.factory.RotatingGame;
+import me.exerosis.game.engine.implementation.old.game.lms.DeathmatchGame;
+import me.exerosis.game.engine.implementation.old.game.runner.RunnerGame;
+import me.exerosis.game.engine.implementation.old.game.spleef.SpleefGame;
 import me.exerosis.game.engine.util.FreezePlayerUtil;
 import net.minecraft.server.v1_8_R1.Entity;
 import org.bukkit.Bukkit;

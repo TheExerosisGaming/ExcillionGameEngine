@@ -1,0 +1,83 @@
+package me.exerosis.game.engine.implementation.trialtwo.components.player;
+
+import me.exerosis.game.engine.core.Game;
+import me.exerosis.game.engine.core.GameComponent;
+import me.exerosis.game.engine.implementation.trialtwo.components.CoreGameComponent;
+import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerClearEvent;
+import me.exerosis.reflection.event.EventListener;
+import me.exerosis.reflection.event.Priority;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+
+public class PlayerComponent extends GameComponent {
+    private SpawnpointComponent _spawnpointComponent;
+    private CoreGameComponent _coreGameComponent;
+    private GameMode _defaultGameMode;
+
+    public PlayerComponent(Game game, SpawnpointComponent spawnpointComponent, CoreGameComponent coreGameComponent, GameMode defaultGameMode) {
+        super(game);
+        _spawnpointComponent = spawnpointComponent;
+        _coreGameComponent = coreGameComponent;
+        _defaultGameMode = defaultGameMode;
+    }
+
+    @Override
+    public void onEnable() {
+        registerListener();
+        super.onEnable();
+    }
+
+    @Override
+    public void onDisable() {
+        unregisterListener();
+        super.onDisable();
+    }
+
+    @EventListener
+    public void onPreLogin(PlayerLoginEvent event) {
+        if (getPlayers().size() >= _coreGameComponent.getMaxPlayers())
+            event.disallow(Result.KICK_OTHER, String.valueOf(ChatColor.RED) + ChatColor.BOLD + "The game is full!");
+    }
+
+    @EventListener(priority = Priority.LOWEST)
+    public void onJoin(PlayerJoinEvent event) {
+        _spawnpointComponent.sendToSpawn(event.getPlayer());
+        clearPlayer(event.getPlayer(), true);
+    }
+
+    public void clearPlayer(Player player) {
+        clearPlayer(player, true);
+    }
+
+    public void clearPlayer(Player player, boolean full) {
+        callEvent(new PlayerClearEvent(player, full), event -> {
+            if (event.isCancelled())
+                return;
+            player.setGameMode(_defaultGameMode);
+            player.setHealth(20.0);
+            player.setFoodLevel(20);
+            player.setFireTicks(0);
+            player.setFallDistance(0);
+            player.setExp(0);
+            player.setWalkSpeed(0.2F);
+            if (!event.isFull())
+                return;
+            PlayerInventory inventory = player.getInventory();
+            inventory.clear();
+            inventory.removeItem(inventory.getArmorContents());
+
+            for (PotionEffect potionEffect : player.getActivePotionEffects())
+                player.removePotionEffect(potionEffect.getType());
+        });
+    }
+
+    public GameMode getDefaultGameMode() {
+        return _defaultGameMode;
+    }
+}
