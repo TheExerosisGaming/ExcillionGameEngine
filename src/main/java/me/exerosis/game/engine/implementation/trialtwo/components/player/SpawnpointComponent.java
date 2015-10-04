@@ -1,13 +1,15 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player;
 
+import me.exerosis.component.event.EventListener;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
+import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.components.world.WorldComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
 import me.exerosis.packet.utils.location.LocationUtils;
-import me.exerosis.reflection.event.EventListener;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -18,8 +20,8 @@ import java.util.stream.Collectors;
 
 //TODO add spawnpoint factory
 public class SpawnpointComponent extends GameComponent {
-    List<Vector> _spawns = new ArrayList<>();
-    int index = 0;
+    private List<Vector> _spawns = new ArrayList<>();
+    private int index = 0;
     private WorldComponent _worldComponent;
 
     public SpawnpointComponent(Game game, WorldComponent worldComponent) {
@@ -38,7 +40,7 @@ public class SpawnpointComponent extends GameComponent {
     public Vector getNextSpawn() {
         if (index >= _spawns.size() - 1)
             index = 0;
-        return _spawns.get(index++);
+        return _spawns.size() > 0 ? _spawns.get(index++) : null;
     }
 
     private List<Vector> getConfigSpawns() {
@@ -51,7 +53,9 @@ public class SpawnpointComponent extends GameComponent {
     }
 
     public void sendToSpawn(Player player) {
-        player.teleport(getGameState().equals(GameState.LOBBY, GameState.RESTARTING) ? getLobbySpawn() : getNextSpawn().toLocation(player.getWorld()));
+        Vector nextSpawn = getNextSpawn();
+        World gameWorld = _worldComponent.getGameWorld();
+        player.teleport(getGameState().equals(GameLocation.LOBBY_WORLD.getStates()) ? getLobbySpawn() : nextSpawn == null ? gameWorld.getSpawnLocation() : nextSpawn.toLocation(gameWorld));
     }
 
     @Override
@@ -59,11 +63,5 @@ public class SpawnpointComponent extends GameComponent {
         registerListener();
         _spawns = getConfigSpawns();
         super.onEnable();
-    }
-
-    @Override
-    public void onDisable() {
-        unregisterListener();
-        super.onDisable();
     }
 }

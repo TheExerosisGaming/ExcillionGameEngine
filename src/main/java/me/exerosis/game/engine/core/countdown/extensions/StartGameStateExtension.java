@@ -1,11 +1,11 @@
 package me.exerosis.game.engine.core.countdown.extensions;
 
+import me.exerosis.component.event.EventListener;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.countdown.Countdown;
 import me.exerosis.game.engine.core.countdown.CountdownExtension;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
-import me.exerosis.reflection.event.EventListener;
 
 public class StartGameStateExtension extends CountdownExtension {
     private final GameState _startGameState;

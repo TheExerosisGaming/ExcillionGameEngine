@@ -1,9 +1,6 @@
 name: Excillion_Game_Engine
 main: me.exerosis.game.engine.Main
 version: 9.0.0
-depend: [P-3058_Pipeline_Accelerator]
-depend: [IOAPI]
-depend: [SQLDatabases]
 commands:
     game:
     kits:

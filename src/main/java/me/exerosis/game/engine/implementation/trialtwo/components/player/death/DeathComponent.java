@@ -5,8 +5,8 @@ import me.exerosis.game.engine.core.StateComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import me.exerosis.game.engine.util.ChatColors;
-import me.exerosis.reflection.event.EventListener;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 @SuppressWarnings("deprecation")
@@ -17,7 +17,7 @@ public class DeathComponent extends StateComponent implements ChatColors {
         super(game, GameLocation.GAME_WORLD);
     }
 
-    @EventListener
+    @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         event.setDeathMessage("");
         event.getEntity().setHealth(20.0);
@@ -29,6 +29,7 @@ public class DeathComponent extends StateComponent implements ChatColors {
     public void kill(Player player) {
         kill(player, null);
     }
+
     public void kill(Player player, Player killer) {
         callEvent(new PlayerKilledEvent(player, killer), event -> {
             if (event.isCancelled())
@@ -42,11 +43,4 @@ public class DeathComponent extends StateComponent implements ChatColors {
         registerListener();
         super.onEnable();
     }
-
-    @Override
-    public void onDisable() {
-        unregisterListener();
-        super.onEnable();
-    }
-
 }

@@ -1,15 +1,16 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 
+import me.exerosis.component.event.EventListener;
+import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.StateComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerSpectateEvent;
-import me.exerosis.reflection.event.EventListener;
-import me.exerosis.reflection.event.Priority;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class WinnersComponent extends StateComponent {
@@ -26,7 +27,7 @@ public class WinnersComponent extends StateComponent {
         reducePlayers(event.getPlayer());
     }
 
-    @EventListener
+    @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         if (!_spectateComponent.getSpectatingPlayers().contains(event.getPlayer()))
             reducePlayers(event.getPlayer());

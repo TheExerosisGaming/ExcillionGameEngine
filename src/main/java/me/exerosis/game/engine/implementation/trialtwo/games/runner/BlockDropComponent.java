@@ -1,11 +1,9 @@
 package me.exerosis.game.engine.implementation.trialtwo.games.runner;
 
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.GameComponent;
+import me.exerosis.game.engine.core.StateComponent;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.SpectateComponent;
-import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
-import me.exerosis.reflection.event.EventListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,9 +11,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.material.MaterialData;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
-public class BlockDropComponent extends GameComponent implements Runnable {
+public class BlockDropComponent extends StateComponent implements Runnable {
     public static final MaterialData[] CHANGE = new MaterialData[]{
             new MaterialData(Material.STAINED_CLAY, (byte) 4),
             new MaterialData(Material.STAINED_CLAY, (byte) 1),
@@ -36,8 +34,8 @@ public class BlockDropComponent extends GameComponent implements Runnable {
     private Map<Block, Byte> _blocks = new HashMap<>();
     private long _speed;
 
-    public BlockDropComponent(Plugin plugin, Game game, SpectateComponent spectateComponent, long speed) {
-        super(game);
+    public BlockDropComponent(Game game, SpectateComponent spectateComponent, long speed) {
+        super(game, GameState.IN_GAME);
         _spectateComponent = spectateComponent;
         _speed = speed;
     }
@@ -45,39 +43,28 @@ public class BlockDropComponent extends GameComponent implements Runnable {
     @Override
     public void onEnable() {
         registerListener();
+        startTask(_speed, _speed);
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        unregisterListener();
+        stopTask();
         super.onDisable();
     }
 
-    @EventListener
-    public void onGameState(GameStateChangeEvent event) {
-        if (event.getNewGameState().equals(GameState.IN_GAME))
-            startTask(_speed, _speed);
-        else
-            stopTask();
-    }
-
-    @EventListener
+    @EventHandler
     public void onLand(EntityChangeBlockEvent event) {
         if (event.getEntityType().equals(EntityType.FALLING_BLOCK))
             event.setCancelled(true);
     }
 
-
     @Override
     public void run() {
-        if (!getGameState().equals(GameState.IN_GAME))
-            return;
         addBlocks();
 
         Set<Block> remove = new HashSet<>();
         for (Entry<Block, Byte> entry : _blocks.entrySet()) {
-
             Byte b = entry.getValue();
             Block block = entry.getKey();
             b++;

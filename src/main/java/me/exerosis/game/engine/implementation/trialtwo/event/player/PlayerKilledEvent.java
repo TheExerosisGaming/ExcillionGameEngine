@@ -1,6 +1,6 @@
 package me.exerosis.game.engine.implementation.trialtwo.event.player;
 
-import me.exerosis.reflection.event.Cancellable;
+import me.exerosis.component.event.Cancellable;
 import org.bukkit.entity.Player;
 
 public class PlayerKilledEvent extends GamePlayerEvent implements Cancellable {
@@ -11,11 +11,11 @@ public class PlayerKilledEvent extends GamePlayerEvent implements Cancellable {
         _killer = killer;
     }
 
-    public void setKiller(Player killer) {
-        _killer = killer;
-    }
-
     public Player getKiller() {
         return _killer;
+    }
+
+    public void setKiller(Player killer) {
+        _killer = killer;
     }
 }

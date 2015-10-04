@@ -1,9 +1,9 @@
 package me.exerosis.game.engine.core.countdown.extensions;
 
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.core.countdown.Countdown;
 import me.exerosis.game.engine.core.countdown.CountdownExtension;
+import me.exerosis.game.engine.core.state.GameState;
 
 public class SetGameStateExtension extends CountdownExtension {
     private GameState _nextGameState;
@@ -15,6 +15,7 @@ public class SetGameStateExtension extends CountdownExtension {
 
     @Override
     public void done() {
+        System.out.println("gamestat");
         getGame().setSystemState(_nextGameState);
     }
 
@@ -24,11 +25,11 @@ public class SetGameStateExtension extends CountdownExtension {
             getCountdown().stop();
     }
 
-    public void setNextGameState(GameState nextGameState) {
-        _nextGameState = nextGameState;
-    }
-
     public GameState getNextGameState() {
         return _nextGameState;
+    }
+
+    public void setNextGameState(GameState nextGameState) {
+        _nextGameState = nextGameState;
     }
 }

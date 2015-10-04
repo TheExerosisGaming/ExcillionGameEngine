@@ -39,18 +39,18 @@ public class FreezePlayerUtil implements Runnable, Listener {
     private static FreezePlayerUtil instance = null;
 
     //Frozen player data values.
-    private Map<Player, Triplet<Integer, Float, Pair<Integer, Integer>>> _players = new HashMap<Player, Triplet<Integer, Float, Pair<Integer, Integer>>>();
+    private Map<Player, Triplet<Integer, Float, Pair<Integer, Integer>>> _players = new HashMap<>();
 
     //Queued offline players.
-    private Map<OfflinePlayer, Boolean> _toFreeze = new HashMap<OfflinePlayer, Boolean>();
+    private Map<OfflinePlayer, Boolean> _toFreeze = new HashMap<>();
     private byte _freezeNew = 0;
 
-    //Task and event fields.
+    //Task and events fields.
     private int _id;
     private Plugin _plugin;
 
     //Peaceful worlds
-    private Set<World> _worlds = new HashSet<World>();
+    private Set<World> _worlds = new HashSet<>();
 
     //Private singleton constructor.
     private FreezePlayerUtil() {
@@ -108,8 +108,8 @@ public class FreezePlayerUtil implements Runnable, Listener {
                 Pair<Integer, Integer> potionPair = null;
                 for (PotionEffect effect : player.getActivePotionEffects())
                     if (effect.getType().equals(PotionEffectType.JUMP))
-                        potionPair = new Pair<Integer, Integer>(effect.getDuration(), effect.getAmplifier());
-                _players.put(player, new Triplet<Integer, Float, Pair<Integer, Integer>>(player.getFoodLevel(), player.getWalkSpeed(), potionPair));
+                        potionPair = new Pair<>(effect.getDuration(), effect.getAmplifier());
+                _players.put(player, new Triplet<>(player.getFoodLevel(), player.getWalkSpeed(), potionPair));
                 player.setWalkSpeed(0.0F);
                 player.removePotionEffect(PotionEffectType.JUMP);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128));
@@ -143,7 +143,8 @@ public class FreezePlayerUtil implements Runnable, Listener {
      * @param players {@linkplain Player}[] The list of Players or OfflinePlayers to be frozen. Must be greater then 0.
      */
     public void setFrozen(OfflinePlayer... players) {
-        setFrozen(players);
+        for (OfflinePlayer player : players)
+            setFrozen(player);
     }
 
     /**
@@ -154,9 +155,7 @@ public class FreezePlayerUtil implements Runnable, Listener {
      */
     @SuppressWarnings("deprecation")
     public void setAllFrozen(boolean frozen, boolean offline) {
-        for (Player player : Bukkit.getOnlinePlayers())
-            if (isFrozen(player) != frozen)
-                setFrozen(frozen, player);
+        PlayerUtil.getOnlinePlayers().stream().filter(player -> isFrozen(player) != frozen).forEach(player -> setFrozen(frozen, player));
         if (offline)
             setFreezeNewPlayers((byte) (frozen ? 1 : -1));
     }
@@ -199,7 +198,7 @@ public class FreezePlayerUtil implements Runnable, Listener {
      * @return boolean - True if the OfflinePlayer is to be frozen or unfrozen.
      */
     public boolean willBeAffected(OfflinePlayer player) {
-        return _toFreeze.containsKey(player) && _toFreeze.get(player).booleanValue();
+        return _toFreeze.containsKey(player) && _toFreeze.get(player);
     }
 
     //Listeners and runners.
@@ -217,16 +216,15 @@ public class FreezePlayerUtil implements Runnable, Listener {
     /**
      * Checks if the {@linkplain Player} is queued to be frozen or unfrozen and acts accordingly.
      *
-     * @param event {@linkplain PlayerJoinEvent} A param for {@linkplain Bukkit}'s event system.
+     * @param event {@linkplain PlayerJoinEvent} A param for {@linkplain Bukkit}'s events system.
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         //Checks if this is a queued player joining.
-        for (Entry<OfflinePlayer, Boolean> entry : _toFreeze.entrySet())
-            if (entry.getKey().getPlayer().equals(event.getPlayer())) {
-                setFrozen(entry.getValue(), event.getPlayer());
-                _toFreeze.remove(entry.getKey());
-            }
+        _toFreeze.entrySet().stream().filter(entry -> entry.getKey().getPlayer().equals(event.getPlayer())).forEach(entry -> {
+            setFrozen(entry.getValue(), event.getPlayer());
+            _toFreeze.remove(entry.getKey());
+        });
 
         //Check if new players should be affected.
         if (_freezeNew == 1)
@@ -238,7 +236,7 @@ public class FreezePlayerUtil implements Runnable, Listener {
     /**
      * Set peaceful worlds to normal and make sure no mobs spawn.
      *
-     * @param event {@linkplain WorldLoadEvent} A param for {@linkplain Bukkit}'s event system.
+     * @param event {@linkplain WorldLoadEvent} A param for {@linkplain Bukkit}'s events system.
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldLoad(WorldLoadEvent event) {
@@ -251,7 +249,7 @@ public class FreezePlayerUtil implements Runnable, Listener {
     /**
      * Makes sure no mobs spawn in peaceful worlds.
      *
-     * @param event {@linkplain EntitySpawnEvent} A param for {@linkplain Bukkit}'s event system.
+     * @param event {@linkplain EntitySpawnEvent} A param for {@linkplain Bukkit}'s events system.
      */
     @EventHandler
     public void onMobSpawn(EntitySpawnEvent event) {
@@ -264,7 +262,7 @@ public class FreezePlayerUtil implements Runnable, Listener {
     /**
      * Makes sure hackers can't move.
      *
-     * @param event {@linkplain PlayerMoveEvent} A param for {@linkplain Bukkit}'s event system.
+     * @param event {@linkplain PlayerMoveEvent} A param for {@linkplain Bukkit}'s events system.
      */
     @EventHandler
     public void onMove(PlayerMoveEvent event) {

@@ -1,11 +1,10 @@
 package me.exerosis.game.engine.core;
 
 import me.exerosis.component.Component;
+import me.exerosis.component.event.EventExecutor;
 import me.exerosis.game.engine.core.state.GameState;
-import me.exerosis.game.engine.implementation.trialtwo.components.world.GameFolderManager;
 import me.exerosis.game.engine.util.PlayerUtil;
 import me.exerosis.packet.utils.ticker.ExTask;
-import me.exerosis.reflection.event.EventExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,12 +23,12 @@ public class GameComponent implements Component, Runnable, Listener {
         this.game = game;
     }
 
-    public void setGameState(GameState state) {
-        game.setSystemState(state);
-    }
-
     public GameState getGameState() {
         return (GameState) game.getSystemState();
+    }
+
+    public void setGameState(GameState state) {
+        game.setSystemState(state);
     }
 
     public Plugin getPlugin() {
@@ -42,14 +41,6 @@ public class GameComponent implements Component, Runnable, Listener {
 
     public Game getGame() {
         return game;
-    }
-
-    public GameFolderManager.GameStats getStats() {
-        return game.getStats();
-    }
-
-    public GameFolderManager.GameStats.GameFileManager getFileManager() {
-        return game.getFileManager();
     }
 
     public List<Player> getPlayers() {

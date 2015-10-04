@@ -4,11 +4,11 @@ import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.CoreGameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerClearEvent;
-import me.exerosis.reflection.event.EventListener;
-import me.exerosis.reflection.event.Priority;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -20,32 +20,27 @@ public class PlayerComponent extends GameComponent {
     private CoreGameComponent _coreGameComponent;
     private GameMode _defaultGameMode;
 
-    public PlayerComponent(Game game, SpawnpointComponent spawnpointComponent, CoreGameComponent coreGameComponent, GameMode defaultGameMode) {
+    public PlayerComponent(Game game, SpawnpointComponent spawnpointComponent, CoreGameComponent coreGameComponent) {
         super(game);
         _spawnpointComponent = spawnpointComponent;
         _coreGameComponent = coreGameComponent;
-        _defaultGameMode = defaultGameMode;
     }
 
     @Override
     public void onEnable() {
         registerListener();
+        getGame().getGameConfig().addDefault("defaultGameMode", "ADVENTURE");
+        _defaultGameMode = GameMode.valueOf(getGame().getGameConfigValue("defaultGameMode", String.class));
         super.onEnable();
     }
 
-    @Override
-    public void onDisable() {
-        unregisterListener();
-        super.onDisable();
-    }
-
-    @EventListener
+    @EventHandler
     public void onPreLogin(PlayerLoginEvent event) {
         if (getPlayers().size() >= _coreGameComponent.getMaxPlayers())
             event.disallow(Result.KICK_OTHER, String.valueOf(ChatColor.RED) + ChatColor.BOLD + "The game is full!");
     }
 
-    @EventListener(priority = Priority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         _spawnpointComponent.sendToSpawn(event.getPlayer());
         clearPlayer(event.getPlayer(), true);

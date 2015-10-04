@@ -4,8 +4,8 @@ import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.StateComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
-import me.exerosis.reflection.event.EventListener;
 import org.bukkit.*;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +17,7 @@ public class BloodComponent extends StateComponent {
         super(game, GameLocation.GAME_WORLD);
     }
 
-    @EventListener
+    @EventHandler
     public void onDeath(PlayerKilledEvent event){
         playDeathEffect(event.getPlayer().getLocation());
     }

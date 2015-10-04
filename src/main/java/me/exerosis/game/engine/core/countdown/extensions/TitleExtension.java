@@ -26,7 +26,7 @@ public abstract class TitleExtension extends CountdownExtension {
 
     @Override
     public void tick(int timeLeft) {
-        Pair<String, String> display = mod(getCountdown().getTimeLeft());
+        Pair<String, String> display = mod(timeLeft);
         if (display != null) {
             _title.setTitle(display.getA());
             _title.setSubtitle(display.getB());
@@ -35,15 +35,13 @@ public abstract class TitleExtension extends CountdownExtension {
 
     @Override
     public void start(int time) {
-        if (time == getCountdown().getTime())
-            for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
-                player.setDisplayed(_title, true);
+        for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
+            player.setDisplayed(_title, true);
     }
 
     @Override
     public void stop(int index) {
-        if (index == 0)
-            for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
-                player.setDisplayed(_title, false);
+        for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
+            player.setDisplayed(_title, false);
     }
 }

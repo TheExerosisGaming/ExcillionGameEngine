@@ -1,11 +1,12 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.world;
 
+import me.exerosis.component.event.EventListener;
+import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
-import me.exerosis.reflection.event.EventListener;
-import me.exerosis.reflection.event.Priority;
+import me.exerosis.io.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,15 +55,16 @@ public class WorldComponent extends GameComponent {
     public void onGameStateChange(GameStateChangeEvent event) {
         if (event.getNewGameState().equals(GameState.RESTARTING))
             tryUnload(() -> {
-                getArena().nextSystem();
                 print("Game ended, starting next game.");
+                getArena().nextSystem();
+                print("Started next game!");
             });
     }
 
     private void tryLoad() {
         print("Trying to load world!");
         if (_worldTemplate == null || !_worldTemplate.exists())
-            _worldTemplate = getArena().getManager().getGameStats(getGame().getName()).getFileManager().getFile("level.dat");
+            _worldTemplate = FileUtil.searchFolder(getGame().getFolder(), "level.dat");
 
         File worldFolder = new File(getName());
         if (worldFolder.mkdirs())
@@ -120,7 +122,7 @@ public class WorldComponent extends GameComponent {
                     if (runWhenUnloaded != null)
                         runWhenUnloaded.run();
                 }
-            }, 40);
+            }, 60);
         }, 20);
     }
 
@@ -128,15 +130,9 @@ public class WorldComponent extends GameComponent {
     @Override
     public void onEnable() {
         registerListener();
-        _worldTemplate = getArena().getManager().getGameStats(getGame().getName()).getFileManager().getFile("level.dat");
+        _worldTemplate = FileUtil.searchFolder(getGame().getFolder(), "level.dat");
         tryLoad();
         super.onEnable();
-    }
-
-    @Override
-    public void onDisable() {
-        unregisterListener();
-        super.onDisable();
     }
 
     public String getMapDsc() {

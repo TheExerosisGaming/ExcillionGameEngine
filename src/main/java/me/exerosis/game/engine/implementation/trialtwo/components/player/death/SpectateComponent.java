@@ -1,15 +1,17 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 
+import me.exerosis.component.event.EventListener;
+import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.StateComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.PlayerComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerSpectateEvent;
-import me.exerosis.reflection.event.EventListener;
-import me.exerosis.reflection.event.Priority;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
@@ -26,12 +28,12 @@ public class SpectateComponent extends StateComponent {
         _playerComponent = playerComponent;
     }
 
-    @EventListener(priority = Priority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent event) {
         setSpectating(event.getPlayer());
     }
 
-    @EventListener
+    @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         if (_spectatingPlayers.contains(event.getPlayer()))
             _spectatingPlayers.remove(event.getPlayer());

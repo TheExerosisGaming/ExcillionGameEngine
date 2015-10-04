@@ -1,7 +1,6 @@
 package me.exerosis.game.engine.implementation.trialtwo.event.player;
 
-import me.exerosis.game.engine.implementation.trialtwo.event.player.GamePlayerEvent;
-import me.exerosis.reflection.event.Cancellable;
+import me.exerosis.component.event.Cancellable;
 import org.bukkit.entity.Player;
 
 public class PlayerClearEvent extends GamePlayerEvent implements Cancellable {

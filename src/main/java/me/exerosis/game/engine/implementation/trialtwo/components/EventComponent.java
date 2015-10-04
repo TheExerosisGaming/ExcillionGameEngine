@@ -1,10 +1,10 @@
 package me.exerosis.game.engine.implementation.trialtwo.components;
 
+import me.exerosis.component.event.EventListener;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
-import me.exerosis.reflection.event.EventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
@@ -13,7 +13,6 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -39,6 +38,7 @@ public class EventComponent extends GameComponent {
 
     @EventListener
     public void onGameStateChange(GameStateChangeEvent event) {
+        System.out.println(event.getNewGameState());
         for (World world : Bukkit.getWorlds()) {
             world.getEntities().stream().filter(e -> e instanceof Monster || e instanceof Animals).forEach(org.bukkit.entity.Entity::remove);
             world.setDifficulty(Difficulty.NORMAL);
@@ -53,17 +53,17 @@ public class EventComponent extends GameComponent {
         }
     }
 
-    @EventListener
+    @EventHandler
     public void onExpChange(PlayerExpChangeEvent event) {
         event.getPlayer().setExp(0);
     }
 
-    @EventListener
+    @EventHandler
     public void onRain(WeatherChangeEvent event) {
         event.getWorld().setWeatherDuration(0);
     }
 
-    @EventListener
+    @EventHandler
     public void onShoot(EntityShootBowEvent event) {
         if (!event.getEntityType().equals(EntityType.PLAYER))
             return;
@@ -76,40 +76,36 @@ public class EventComponent extends GameComponent {
                 stack.setAmount(stack.getAmount() + 1);
     }
 
-    @EventListener
+    @EventHandler
     public void itemPickup(PlayerPickupItemEvent event) {
         event.setCancelled(true);
     }
 
-    @EventListener
+    @EventHandler
     public void itemDrop(PlayerDropItemEvent event) {
         event.setCancelled(true);
     }
 
-    @EventListener
+    @EventHandler
     public void onHungerLower(FoodLevelChangeEvent event) {
         if (getGameState().equals(GameLocation.LOBBY_WORLD.getStates()))
             event.setCancelled(true);
     }
 
-    @EventListener
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (getGameState().equals(GameLocation.LOBBY_WORLD.getStates()))
             event.setCancelled(true);
     }
 
-    @EventListener
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onEvent(Event event){
-        callEvent(event);
-    }
 
-  /*  @EventListener
-    public void onQuit(PlayerQuitEvent event) {
-        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> Bukkit.getPluginManager().callEvent(new PlayerLeaveEvent(event.getPlayer(), event.getQuitMessage())), 1);
+  /*  @EventHandler
+    public void onQuit(PlayerQuitEvent events) {
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> Bukkit.getPluginManager().callEvent(new PlayerLeaveEvent(events.getPlayer(), events.getQuitMessage())), 1);
     }*/
 }

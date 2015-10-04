@@ -1,29 +1,33 @@
 package me.exerosis.game.engine.core.factory;
 
-import me.exerosis.component.factory.SystemFactory;
+import me.exerosis.game.engine.core.Arena;
 import me.exerosis.game.engine.core.Game;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Random;
 
-public class RandomGameFactory implements SystemFactory {
-    private Game[] _games;
+public class RandomGameFactory extends ConfigurationGameFactory {
+    public static final Random RANDOM = new Random();
     private Game _lastGame;
-    private Random _random;
 
-    public RandomGameFactory(Game... games) {
-        _games = games;
-        _random = new Random();
+    @SafeVarargs
+    public RandomGameFactory(Plugin plugin, Arena arena, Class<? extends Game>... gameClasses) {
+        super(plugin, arena, gameClasses);
     }
 
     @Override
     public Game getNextGame() {
+        if (getGames().size() == 1)
+            return getGames().get(0);
         Game newGame = pickRandom();
-        while (_lastGame == newGame)
+        while (_lastGame.equals(newGame))
             newGame = pickRandom();
         return _lastGame = newGame;
     }
 
     private Game pickRandom() {
-        return _games[_random.nextInt(_games.length - 1)];
+        if (getGames().size() > 0)
+            return getGames().get(RANDOM.nextInt(getGames().size()));
+        return null;
     }
 }

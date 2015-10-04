@@ -9,8 +9,8 @@ public class CountdownExtension extends GameComponent {
     public CountdownExtension(Game game, Countdown countdown) {
         super(game);
         _countdown = countdown;
+        registerListener();
     }
-
 
     public Countdown getCountdown() {
         return _countdown;
@@ -32,6 +32,6 @@ public class CountdownExtension extends GameComponent {
     }
 
     public void stop(int index) {
-
+        unregisterListener();
     }
 }

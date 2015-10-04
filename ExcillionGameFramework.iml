@@ -14,10 +14,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.8.1" level="project" />
-    <orderEntry type="module" module-name="ReflectionUtilities" />
-    <orderEntry type="module" module-name="ComponentFramework" />
     <orderEntry type="module" module-name="ProtocolAPI" />
+    <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.8.1" level="project" />
+    <orderEntry type="module" module-name="ComponentFramework" />
     <orderEntry type="module" module-name="InputOutputUtilities" />
+    <orderEntry type="module" module-name="ReflectionUtilities" />
   </component>
 </module>
