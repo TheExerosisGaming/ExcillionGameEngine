@@ -5,6 +5,7 @@ import me.exerosis.component.event.EventExecutor;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.util.PlayerUtil;
 import me.exerosis.packet.utils.ticker.ExTask;
+import me.exerosis.reflection.util.Enableable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,13 +16,19 @@ import org.bukkit.plugin.Plugin;
 import java.io.PrintStream;
 import java.util.List;
 
-public class GameComponent implements Component, Runnable, Listener {
+public class GameComponent implements Component, Runnable, Listener, Enableable {
     private final Game game;
     private boolean enabled;
 
     public GameComponent(Game game) {
         this.game = game;
+      /*  game.addComponent(this);*/
     }
+/*
+    public GameComponent(Game game, GameState enable, GameState disable) {
+        this.game = game;
+        game.addComponent(enable, disable, this);
+    }*/
 
     public GameState getGameState() {
         return (GameState) game.getSystemState();

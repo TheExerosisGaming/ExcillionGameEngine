@@ -8,20 +8,16 @@ import me.exerosis.packet.player.injection.packet.player.display.displayables.Ti
 import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
 import me.exerosis.reflection.data.Pair;
 
-public abstract class TitleExtension extends CountdownExtension {
+public class TitleExtension extends CountdownExtension {
     private final Title _title;
 
     public TitleExtension(Countdown countdown, Game game) {
         super(game, countdown);
-        _title = new Title(5, "", "", 0, 2, 0);
+        _title = new Title(1, "", "", 0, 4, 0);
     }
 
-    public abstract Pair<String, String> mod(int time);
-
-    @Override
-    public void done() {
-        for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
-            player.setDisplayed(_title, false);
+    public Pair<String, String> mod(int time) {
+        return Pair.of(Integer.toString(time), "");
     }
 
     @Override
@@ -35,13 +31,15 @@ public abstract class TitleExtension extends CountdownExtension {
 
     @Override
     public void start(int time) {
-        for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
-            player.setDisplayed(_title, true);
+        if (time == getCountdown().getTime())
+            for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
+                player.setDisplayed(_title, true);
     }
 
     @Override
     public void stop(int index) {
-        for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
-            player.setDisplayed(_title, false);
+        if (index == 0)
+            for (PacketPlayer player : PlayerHandler.getOnlinePlayers())
+                player.setDisplayed(_title, false);
     }
 }

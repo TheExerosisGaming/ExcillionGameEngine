@@ -1,12 +1,9 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player;
 
-import me.exerosis.component.event.EventListener;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.core.state.GameLocation;
-import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.components.world.WorldComponent;
-import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
 import me.exerosis.packet.utils.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -29,12 +26,12 @@ public class SpawnpointComponent extends GameComponent {
         _worldComponent = worldComponent;
     }
 
-    @EventListener(postEvent = true)
-    public void onGameStateChange(GameStateChangeEvent event) {
-        if (!event.getNewGameState().equals(GameState.PRE_GAME))
-            return;
-        index = 0;
-        getPlayers().forEach(this::sendToSpawn);
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public Vector getNextSpawn() {
@@ -60,7 +57,6 @@ public class SpawnpointComponent extends GameComponent {
 
     @Override
     public void onEnable() {
-        registerListener();
         _spawns = getConfigSpawns();
         super.onEnable();
     }

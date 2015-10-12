@@ -1,16 +1,20 @@
 package me.exerosis.game.engine.core;
 
+import me.exerosis.component.Component;
 import me.exerosis.component.ComponentSystem;
 import me.exerosis.component.systemstate.ComponentSystemHolder;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
 import me.exerosis.game.engine.util.FileGetter;
 import me.exerosis.io.Remote.RemoteFolder;
+import me.exerosis.reflection.data.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game implements ComponentSystem {
     private final Plugin plugin;
@@ -18,6 +22,7 @@ public class Game implements ComponentSystem {
     private RemoteFolder _gameFolder;
     private String _name;
     private YamlConfiguration _gameConfig;
+    private Map<Pair<GameState, GameState>, Component> _gameGameComponents = new HashMap<>();
     //https://www.dropbox.com/s/7hnr2hgos4xa910/Runner.zip?dl=0
 
     public Game(Plugin plugin, Arena arena, RemoteFolder gameFolder, String name) {
@@ -48,6 +53,7 @@ public class Game implements ComponentSystem {
             if (!systemState.equals(getSystemState()))
                 getEventManager().callEvent(new GameStateChangeEvent((GameState) getSystemState(), (GameState) systemState), event -> ComponentSystemHolder.setSystemState(this, event.getNewGameState()));
     }
+
 
     public <T> T getGameConfigValue(String index, Class<T> clazz) {
         return clazz.cast(getGameConfigValue(index));

@@ -14,15 +14,9 @@ public class SetGameStateExtension extends CountdownExtension {
     }
 
     @Override
-    public void done() {
-        System.out.println("gamestat");
-        getGame().setSystemState(_nextGameState);
-    }
-
-    @Override
-    public void setGameState(GameState state) {
-        if (getGame().getSystemState().equals(_nextGameState))
-            getCountdown().stop();
+    public void stop(int index) {
+        if (index == 0)
+            setGameState(_nextGameState);
     }
 
     public GameState getNextGameState() {

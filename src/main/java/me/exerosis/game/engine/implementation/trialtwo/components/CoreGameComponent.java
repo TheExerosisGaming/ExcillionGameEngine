@@ -27,9 +27,10 @@ public class CoreGameComponent extends GameComponent {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         if (getPlayers().size() - 1 <= _endPlayers)
+            setGameState(GameState.POST_GAME);
+        if (getPlayers().size() - 1 == 0)
             setGameState(GameState.RESTARTING);
     }
-
 
     public int getMaxPlayers() {
         return _maxPlayers;

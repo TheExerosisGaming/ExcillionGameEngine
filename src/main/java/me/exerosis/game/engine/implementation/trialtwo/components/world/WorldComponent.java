@@ -38,7 +38,7 @@ public class WorldComponent extends GameComponent {
         if (!event.getWorld().getName().equals(getName()))
             return;
         print("Loaded world!");
-
+        setGameState(GameState.LOBBY);
         _gameWorld = event.getWorld();
         _gameWorld.setDifficulty(Difficulty.NORMAL);
         _gameWorld.setTime(0);
@@ -48,7 +48,7 @@ public class WorldComponent extends GameComponent {
         _gameWorld.setGameRuleValue("showDeathMessages", "false");
         _gameWorld.setGameRuleValue("doMobSpawning", "false");
 
-        setGameState(GameState.LOBBY);
+
     }
 
     @EventListener(postEvent = true, priority = Priority.HIGHEST)

@@ -3,8 +3,7 @@ package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 import me.exerosis.component.event.EventListener;
 import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.StateComponent;
-import me.exerosis.game.engine.core.state.GameLocation;
+import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.PlayerComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerSpectateEvent;
@@ -19,12 +18,12 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpectateComponent extends StateComponent {
+public class SpectateComponent extends GameComponent {
     private List<Player> _spectatingPlayers = new ArrayList<>();
     private PlayerComponent _playerComponent;
 
     public SpectateComponent(Game game, PlayerComponent playerComponent) {
-        super(game, GameLocation.GAME_WORLD);
+        super(game);
         _playerComponent = playerComponent;
     }
 
@@ -54,12 +53,14 @@ public class SpectateComponent extends StateComponent {
             return;
 
         callEvent(new PlayerSpectateEvent(player), event -> {
+            System.out.println(event.isCancelled());
             if (event.isCancelled())
                 return;
+            _playerComponent.clearPlayer(player);
             player.setGameMode(GameMode.SPECTATOR);
             _spectatingPlayers.add(player);
             player.setVelocity(new Vector());
-            _playerComponent.clearPlayer(player);
+            player.setFlying(true);
         });
     }
 
@@ -77,6 +78,12 @@ public class SpectateComponent extends StateComponent {
     public void onDisable() {
         removeAll();
         super.onDisable();
+    }
+
+    @Override
+    public void onEnable() {
+        registerListener();
+        super.onEnable();
     }
 
     //Getters.

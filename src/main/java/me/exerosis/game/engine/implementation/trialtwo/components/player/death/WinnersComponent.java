@@ -3,8 +3,7 @@ package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 import me.exerosis.component.event.EventListener;
 import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.StateComponent;
-import me.exerosis.game.engine.core.state.GameLocation;
+import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.event.GameStateChangeEvent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerSpectateEvent;
@@ -13,12 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class WinnersComponent extends StateComponent {
+public class WinnersComponent extends GameComponent {
     private SpectateComponent _spectateComponent;
     private Player[] _winners = new Player[3];
 
     public WinnersComponent(Game game, SpectateComponent spectateComponent) {
-        super(game, GameLocation.GAME_WORLD);
+        super(game);
         _spectateComponent = spectateComponent;
     }
 

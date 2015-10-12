@@ -4,6 +4,7 @@ import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.countdown.Countdown;
 import me.exerosis.game.engine.core.countdown.extensions.SetGameStateExtension;
 import me.exerosis.game.engine.core.countdown.extensions.StartGameStateExtension;
+import me.exerosis.game.engine.core.countdown.extensions.TitleExtension;
 import me.exerosis.game.engine.core.state.GameState;
 
 public class PostGameCountdown extends Countdown {
@@ -11,5 +12,6 @@ public class PostGameCountdown extends Countdown {
         super(time);
         addExtension(new StartGameStateExtension(this, game, GameState.POST_GAME));
         addExtension(new SetGameStateExtension(this, game, GameState.RESTARTING));
+        addExtension(new TitleExtension(this, game));
     }
 }

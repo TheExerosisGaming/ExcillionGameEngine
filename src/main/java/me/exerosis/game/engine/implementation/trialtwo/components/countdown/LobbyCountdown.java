@@ -8,20 +8,14 @@ import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.components.CoreGameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.countdown.extensions.LobbyExtension;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.SpawnpointComponent;
-import me.exerosis.reflection.data.Pair;
 import org.bukkit.event.Listener;
 
 public class LobbyCountdown extends Countdown implements Listener {
 
     public LobbyCountdown(Game game, CoreGameComponent gameComponent, SpawnpointComponent spawnpointComponent) {
         super(game.getGameConfigValue("lobbyCountDownTime", Integer.class));
-        addExtension(new LobbyExtension(game, this, gameComponent, spawnpointComponent));
         addExtension(new SetGameStateExtension(this, game, GameState.PRE_GAME));
-        addExtension(new TitleExtension(this, game) {
-            @Override
-            public Pair<String, String> mod(int time) {
-                return Pair.of(Integer.toString(time), "");
-            }
-        });
+        addExtension(new LobbyExtension(game, this, gameComponent, spawnpointComponent));
+        addExtension(new TitleExtension(this, game));
     }
 }

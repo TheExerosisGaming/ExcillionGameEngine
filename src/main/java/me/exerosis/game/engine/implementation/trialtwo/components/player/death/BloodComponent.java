@@ -1,8 +1,7 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.StateComponent;
-import me.exerosis.game.engine.core.state.GameLocation;
+import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
@@ -10,11 +9,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-public class BloodComponent extends StateComponent {
+public class BloodComponent extends GameComponent {
     private int blood;
 
     public BloodComponent(Plugin plugin, Game game) {
-        super(game, GameLocation.GAME_WORLD);
+        super(game);
     }
 
     @EventHandler

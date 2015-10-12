@@ -1,8 +1,7 @@
 package me.exerosis.game.engine.implementation.trialtwo.games.runner;
 
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.StateComponent;
-import me.exerosis.game.engine.core.state.GameState;
+import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.SpectateComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
-public class BlockDropComponent extends StateComponent implements Runnable {
+public class BlockDropComponent extends GameComponent {
     public static final MaterialData[] CHANGE = new MaterialData[]{
             new MaterialData(Material.STAINED_CLAY, (byte) 4),
             new MaterialData(Material.STAINED_CLAY, (byte) 1),
@@ -35,7 +34,7 @@ public class BlockDropComponent extends StateComponent implements Runnable {
     private long _speed;
 
     public BlockDropComponent(Game game, SpectateComponent spectateComponent, long speed) {
-        super(game, GameState.IN_GAME);
+        super(game);
         _spectateComponent = spectateComponent;
         _speed = speed;
     }

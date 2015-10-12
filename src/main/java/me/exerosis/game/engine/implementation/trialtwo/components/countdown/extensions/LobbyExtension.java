@@ -21,15 +21,23 @@ public class LobbyExtension extends CountdownExtension {
         _spawnpointComponent = spawnpointComponent;
     }
 
+    @Override
+    public void onEnable() {
+        if (getGameState().equals(GameState.LOBBY))
+            if (getPlayers().size() >= _gameComponent.getStartPlayers())
+                getCountdown().start();
+        super.onEnable();
+    }
+
     @EventListener
-    public void onRestart(GameStateChangeEvent event) {
-        if (event.getNewGameState().equals(GameState.RESTARTING))
+    public void onGameStateChange(GameStateChangeEvent event) {
+        if (event.getNewGameState().equals(GameState.LOBBY))
             if (getPlayers().size() >= _gameComponent.getStartPlayers())
                 getCountdown().start();
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
         if (getCountdown().isRunning())
             getCountdown().restart();
         if (getPlayers().size() >= _gameComponent.getStartPlayers())
@@ -37,12 +45,10 @@ public class LobbyExtension extends CountdownExtension {
     }
 
     @Override
-    public void tick(int timeLeft) {
-        System.out.println(timeLeft);
-    }
-
-    @Override
-    public void done() {
-        getPlayers().forEach(_spawnpointComponent::sendToSpawn);
+    public void stop(int index) {
+        if (index == 0) {
+            _spawnpointComponent.setIndex(0);
+            getPlayers().forEach(_spawnpointComponent::sendToSpawn);
+        }
     }
 }

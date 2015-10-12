@@ -11,8 +11,6 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +43,15 @@ public abstract class ConfigurationGameFactory implements SystemFactory {
                 Object object = constructor.newInstance(plugin, arena, remoteFolder, _gamesConfig.getString(namePath));
                 games.add((Game) object);
 
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (Exception e) {
+                e.printStackTrace();
+                /*catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 System.err.println("Failed to instantiate class '" + classType + "'!");
             } catch (NoSuchMethodException e) {
                 System.err.println("Failed to locate constructor with params: Plugin, Arena, RemoteFolder!");
             } catch (MalformedURLException e) {
                 System.err.println("Failed to connect to that URL, make sure it is correct!");
+            }*/
             }
         }
     }

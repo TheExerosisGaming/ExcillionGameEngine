@@ -22,7 +22,7 @@ public abstract class Countdown implements Runnable {
     }
 
     public void stop() {
-        extensions.forEach(e -> e.stop(_timeLeft));
+        extensions.forEach(e -> e.stop(0));
         ExTask.stopTask(this);
     }
 
@@ -38,10 +38,8 @@ public abstract class Countdown implements Runnable {
             _timeLeft--;
         extensions.forEach(e -> e.tick(_timeLeft));
 
-        if (_timeLeft == 0) {
-            extensions.forEach(CountdownExtension::done);
+        if (_timeLeft == 0)
             stop();
-        }
     }
 
     public boolean isRunning() {
@@ -92,6 +90,7 @@ public abstract class Countdown implements Runnable {
 
     public void addExtension(CountdownExtension extension) {
         extensions.add(extension);
+        extension.getGame().addComponent(extension);
     }
 
     public LinkedList<CountdownExtension> getExtensions() {

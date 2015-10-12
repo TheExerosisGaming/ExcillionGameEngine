@@ -1,8 +1,7 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 
 import me.exerosis.game.engine.core.Game;
-import me.exerosis.game.engine.core.StateComponent;
-import me.exerosis.game.engine.core.state.GameLocation;
+import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import me.exerosis.game.engine.util.ChatColors;
 import org.bukkit.entity.Player;
@@ -10,11 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 @SuppressWarnings("deprecation")
-public class DeathComponent extends StateComponent implements ChatColors {
+public class DeathComponent extends GameComponent implements ChatColors {
     private int blood = 0;
 
     public DeathComponent(Game game) {
-        super(game, GameLocation.GAME_WORLD);
+        super(game);
     }
 
     @EventHandler

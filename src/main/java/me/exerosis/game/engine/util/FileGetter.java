@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileGetter {
+    public static YamlConfiguration getConfig(String name) {
+        return getConfig(new File(name));
+    }
+
     public static YamlConfiguration getConfig(File configFile) {
         String name = configFile.getName();
         if (!configFile.isFile()) {

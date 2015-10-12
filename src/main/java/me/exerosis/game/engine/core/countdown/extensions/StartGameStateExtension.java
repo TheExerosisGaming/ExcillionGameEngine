@@ -21,18 +21,14 @@ public class StartGameStateExtension extends CountdownExtension {
             getCountdown().start();
     }
 
-    @Override
-    public void done() {
-        unregisterListener();
-    }
-
     public GameState getStartGameState() {
         return _startGameState;
     }
 
     @Override
     public void onEnable() {
-        registerListener();
+        if (getGameState().equals(_startGameState))
+            getCountdown().start();
         super.onEnable();
     }
 }

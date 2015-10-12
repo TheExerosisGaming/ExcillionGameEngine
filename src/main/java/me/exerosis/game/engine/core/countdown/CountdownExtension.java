@@ -9,15 +9,18 @@ public class CountdownExtension extends GameComponent {
     public CountdownExtension(Game game, Countdown countdown) {
         super(game);
         _countdown = countdown;
+    }
+
+    @Override
+    public void onEnable() {
         registerListener();
+        super.onEnable();
     }
 
     public Countdown getCountdown() {
         return _countdown;
     }
 
-    public void done() {
-    }
 
     public void restart() {
 
