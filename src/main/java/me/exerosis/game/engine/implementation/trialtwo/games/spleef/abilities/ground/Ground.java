@@ -1,4 +1,4 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.abilities.ground;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities.ground;
 
 import me.exerosis.packet.utils.location.LocationUtils;
 import me.exerosis.packet.utils.ticker.TickListener;

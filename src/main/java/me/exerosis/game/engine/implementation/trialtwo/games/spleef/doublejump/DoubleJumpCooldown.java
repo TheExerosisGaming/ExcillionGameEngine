@@ -1,14 +1,17 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.doublejump;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.doublejump;
 
+import me.exerosis.game.engine.core.Game;
+import me.exerosis.game.engine.core.cooldown.Cooldown;
 import org.bukkit.ChatColor;
 
 public class DoubleJumpCooldown extends Cooldown {
-    public DoubleJumpCooldown() {
+    public DoubleJumpCooldown(Game game) {
+        super(game);
     }
 
     @Override
     public double getTime() {
-        return 30;
+        return 5;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package me.exerosis.game.engine.implementation.old.core.cooldown;
+package me.exerosis.game.engine.core.cooldown;
 
 import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
 import me.exerosis.packet.player.injection.packet.player.display.displayables.ActionBar;
@@ -81,7 +81,7 @@ public abstract class LoadingBar implements Runnable {
     }
 
     public String getDisplayString() {
-        List<Object> stringList = new ArrayList<Object>();
+        List<Object> stringList = new ArrayList<>();
 
         stringList.add(ChatColor.GREEN);
         for (int x = 0; (x < (int) _fill - 1 && x < 100); x++)
@@ -92,8 +92,7 @@ public abstract class LoadingBar implements Runnable {
             stringList.add("\u258F");
 
         StringBuilder builder = new StringBuilder();
-        for (Object object : stringList)
-            builder.append(object);
+        stringList.forEach(builder::append);
 
         return builder.toString();
     }

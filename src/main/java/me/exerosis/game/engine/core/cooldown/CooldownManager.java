@@ -1,13 +1,17 @@
-package me.exerosis.game.engine.implementation.old.core.cooldown;
+package me.exerosis.game.engine.core.cooldown;
 
+import me.exerosis.game.engine.core.Game;
+import me.exerosis.game.engine.core.GameComponent;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CooldownManager extends Component {
-    private ArrayList<Cooldown> _cooldowns;
+public class CooldownManager extends GameComponent {
+    private List<Cooldown> _cooldowns = new ArrayList<>();
 
-    public CooldownManager() {
+    public CooldownManager(Game game) {
+        super(game);
     }
 
     public boolean isCooling(Player player) {
@@ -25,7 +29,7 @@ public class CooldownManager extends Component {
         return false;
     }
 
-    public ArrayList<Cooldown> getCooldowns() {
+    public List<Cooldown> getCooldowns() {
         return _cooldowns;
     }
 

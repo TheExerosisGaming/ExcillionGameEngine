@@ -1,6 +1,6 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.abilities.ground;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities.ground;
 
-import me.exerosis.game.engine.implementation.old.game.spleef.abilities.FallingBlockPacketEntity;
+import me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities.FallingBlockPacketEntity;
 import me.exerosis.packet.utils.location.LocationUtils;
 import me.exerosis.packet.utils.ticker.TickListener;
 import me.exerosis.packet.utils.ticker.Ticker;
@@ -12,8 +12,8 @@ import org.bukkit.block.Block;
 import java.util.ArrayList;
 
 public class GroundSmashEffect implements TickListener {
-    private ArrayList<Block> _blocks = new ArrayList<Block>();
-    private ArrayList<FallingBlockPacketEntity> _fakeBlocks = new ArrayList<FallingBlockPacketEntity>();
+    private ArrayList<Block> _blocks = new ArrayList<>();
+    private ArrayList<FallingBlockPacketEntity> _fakeBlocks = new ArrayList<>();
     private Location _location;
 
     public GroundSmashEffect(Location location) {
@@ -57,6 +57,4 @@ public class GroundSmashEffect implements TickListener {
             block.sendModCommand("Teleport", location);
         }
     }
-
-
 }

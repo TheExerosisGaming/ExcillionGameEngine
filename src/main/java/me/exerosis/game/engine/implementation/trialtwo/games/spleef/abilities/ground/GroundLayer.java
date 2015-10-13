@@ -1,21 +1,22 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.abilities.ground;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities.ground;
 
-import me.exerosis.game.engine.implementation.old.game.spleef.abilities.FallingBlockPacketEntity;
+import me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities.FallingBlockPacketEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class GroundLayer {
-    private ArrayList<FallingBlockPacketEntity> _blocks = new ArrayList<FallingBlockPacketEntity>();
+    private List<FallingBlockPacketEntity> _blocks = new ArrayList<>();
     private Ground _ground;
     private int _level;
 
     public GroundLayer(Ground ground, int level, Set<Location> set) {
-        for (Location location : set)
-            _blocks.add(new FallingBlockPacketEntity(location, Material.STONE));
+        _blocks.addAll(set.stream().map(l -> new FallingBlockPacketEntity(l, Material.STONE)).collect(Collectors.toList()));
         _ground = ground;
         _level = level;
     }
@@ -30,7 +31,7 @@ public class GroundLayer {
         }
     }
 
-    public ArrayList<FallingBlockPacketEntity> getBlocks() {
+    public List<FallingBlockPacketEntity> getBlocks() {
         return _blocks;
     }
 

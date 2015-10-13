@@ -20,11 +20,9 @@ public class Main extends JavaPlugin implements Listener {
         Arena arena = new Arena();
         arena.setFactory(new RandomGameFactory(this, arena, RunnerGame.class));
         arena.nextSystem();
-        _title = new Title(1, "test", "test");
         FreezePlayerUtil.getInstance().setPlugin(this);
         Bukkit.getPluginManager().registerEvents(this, this);
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

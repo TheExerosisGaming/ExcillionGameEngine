@@ -1,5 +1,7 @@
-package me.exerosis.game.engine.implementation.old.core.cooldown;
+package me.exerosis.game.engine.core.cooldown;
 
+import me.exerosis.game.engine.core.Game;
+import me.exerosis.game.engine.core.GameComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -7,10 +9,11 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Cooldown extends Component {
-    private Map<Player, LoadingBar> _players = new HashMap<Player, LoadingBar>();
+public abstract class Cooldown extends GameComponent {
+    private Map<Player, LoadingBar> _players = new HashMap<>();
 
-    public Cooldown() {
+    public Cooldown(Game game) {
+        super(game);
     }
 
     public boolean isCooling(Player player) {
@@ -30,7 +33,7 @@ public abstract class Cooldown extends Component {
     }
 
     public void removePlayer(Player player) {
-
+        _players.remove(player);
     }
 
     public void pause(boolean pause) {
@@ -48,14 +51,15 @@ public abstract class Cooldown extends Component {
 
     @Override
     public void onEnable() {
-        registerListener(this);
+        registerListener();
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        for (LoadingBar bar : _players.values())
-            bar.stop();
-        unregisterListener(this);
+        _players.values().forEach(LoadingBar::stop);
+        unregisterListener();
+        super.onDisable();
     }
 
     @EventHandler

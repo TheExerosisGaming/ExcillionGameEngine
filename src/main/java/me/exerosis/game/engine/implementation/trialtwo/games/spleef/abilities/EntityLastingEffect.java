@@ -1,13 +1,12 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.abilities;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities;
 
 import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
 import me.exerosis.packet.player.injection.packets.PlayParticle;
-import me.exerosis.packet.utils.ticker.TickListener;
-import me.exerosis.packet.utils.ticker.Ticker;
+import me.exerosis.packet.utils.ticker.ExTask;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public class EntityLastingEffect implements TickListener {
+public class EntityLastingEffect implements Runnable {
     private int _effectTime;
     private Entity _entity;
     private int _id;
@@ -22,7 +21,7 @@ public class EntityLastingEffect implements TickListener {
         _velocity = velocity;
         _speed = speed;
         _particlesCount = particlesCount;
-        Ticker.registerListener(this);
+        ExTask.startTask(this, 1, 1);
     }
 
     public int getEffectTime() {
@@ -74,16 +73,15 @@ public class EntityLastingEffect implements TickListener {
     }
 
     public void mod() {
-
     }
 
     @Override
-    public void tick() {
+    public void run() {
         if (_effectTime <= 0)
-            Ticker.unregisterListener(this);
-        PlayParticle particle = new PlayParticle(_id, _entity.getLocation(), _velocity, (float) _speed, (int) _particlesCount);
-        PlayerHandler.sendGlobalPacket(particle);
+            ExTask.stopTask(this);
         mod();
         _effectTime--;
+        PlayParticle particle = new PlayParticle(_id, _entity.getLocation(), _velocity, (float) _speed, (int) _particlesCount);
+        PlayerHandler.sendGlobalPacket(particle);
     }
 }

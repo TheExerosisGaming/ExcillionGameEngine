@@ -1,5 +1,6 @@
 package me.exerosis.game.engine.implementation.trialtwo.games.spleef;
 
+import me.exerosis.component.event.EventListener;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.DeathComponent;
@@ -8,15 +9,11 @@ import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilled
 import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
 import me.exerosis.packet.player.injection.packet.player.display.displayables.ActionBar;
 import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,12 +29,6 @@ public class SpleefComponent extends GameComponent {
         _deathComponent = deathComponent;
         _spectateComponent = spectateComponent;
         _actionBar = new ActionBar(1, "");
-    }
-
-
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        event.setCancelled(true);
     }
 
     @Override
@@ -64,7 +55,7 @@ public class SpleefComponent extends GameComponent {
             _deathComponent.kill((Player) event.getEntity(), null);
     }
 
-    @EventHandler
+    @EventListener
     public void onDeath(PlayerKilledEvent event) {
         Bukkit.getScheduler().runTaskLater(getPlugin(), () -> PlayerHandler.getPlayer(event.getPlayer()).setDisplayed(_actionBar, false), 5);
     }
@@ -73,12 +64,14 @@ public class SpleefComponent extends GameComponent {
     public void onEnable() {
         registerListener();
         startTask(20, 20);
+        for (Player player : getPlayers()) player.setGameMode(GameMode.SURVIVAL);
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
         stopTask();
+        for (Player player : getPlayers()) player.setGameMode(GameMode.ADVENTURE);
         super.onDisable();
     }
 

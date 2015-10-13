@@ -1,6 +1,7 @@
 package me.exerosis.game.engine.implementation.trialtwo.components;
 
 import me.exerosis.game.engine.core.Game;
+import me.exerosis.game.engine.core.cooldown.CooldownManager;
 import me.exerosis.game.engine.core.state.GameState;
 import me.exerosis.game.engine.implementation.trialtwo.components.countdown.GameCountdown;
 import me.exerosis.game.engine.implementation.trialtwo.components.countdown.LobbyCountdown;
@@ -14,7 +15,8 @@ import me.exerosis.game.engine.implementation.trialtwo.components.player.death.S
 import me.exerosis.game.engine.implementation.trialtwo.components.world.WorldComponent;
 
 public class CoreComponentBundle {
-    private final LMSComponent _lmsComponent;
+    private final CooldownManager _cooldownManager;
+    private LMSComponent _lmsComponent;
     private WorldComponent _worldComponent;
     private CoreGameComponent _coreGameComponent;
     private DeathComponent _deathComponent;
@@ -35,6 +37,7 @@ public class CoreComponentBundle {
         _deathComponent = new DeathComponent(game);
         _chatComponent = new ChatComponent(game);
         _eventComponent = new EventComponent(game);
+        _cooldownManager = new CooldownManager(game);
 
         _spawnpointComponent = new SpawnpointComponent(game, _worldComponent);
         _playerComponent = new PlayerComponent(game, _spawnpointComponent, _coreGameComponent);
@@ -48,16 +51,25 @@ public class CoreComponentBundle {
         game.addComponent(_eventComponent);
         game.addComponent(_spawnpointComponent);
         game.addComponent(_playerComponent);
+        game.addComponent(_cooldownManager);
 
         _lobbyCountdown = new LobbyCountdown(game, _coreGameComponent, _spawnpointComponent);
-        _preGameCountdown = new PreGameCountdown(10, game);
-        _gameCountdown = new GameCountdown(10, game);
-        _postGameCountdown = new PostGameCountdown(10, game);
+        _preGameCountdown = new PreGameCountdown(game);
+        _gameCountdown = new GameCountdown(game);
+        _postGameCountdown = new PostGameCountdown(game);
 
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _lmsComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _voidLevelComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _deathComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _spectateComponent);
+    }
+
+    public CooldownManager getCooldownManager() {
+        return _cooldownManager;
+    }
+
+    public LMSComponent getLMSComponent() {
+        return _lmsComponent;
     }
 
     public WorldComponent getWorldComponent() {
@@ -111,7 +123,6 @@ public class CoreComponentBundle {
     public PostGameCountdown getPostGameCountdown() {
         return _postGameCountdown;
     }
-
 }
    /*
            Map<String, Object> playerData = new HashMap<>();
@@ -128,6 +139,6 @@ public class CoreComponentBundle {
 
         components.add(new CommandExecutorComponent());
         components.add(new ScoreboardComponent());
-        components.add(new CooldownManager());
+
         components.add(new RewardComponent());
         components.addAll(new PauseComponentBundle().getComponents());*/

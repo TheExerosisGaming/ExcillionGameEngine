@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +55,12 @@ public class Game implements ComponentSystem {
                 getEventManager().callEvent(new GameStateChangeEvent((GameState) getSystemState(), (GameState) systemState), event -> ComponentSystemHolder.setSystemState(this, event.getNewGameState()));
     }
 
+    public void saveConfig() {
+        try {
+            _gameConfig.save(getFile("gameConfig.yml"));
+        } catch (IOException ignored) {
+        }
+    }
 
     public <T> T getGameConfigValue(String index, Class<T> clazz) {
         return clazz.cast(getGameConfigValue(index));

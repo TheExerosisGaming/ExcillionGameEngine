@@ -31,6 +31,7 @@ public class PlayerComponent extends GameComponent {
         registerListener();
         getGame().getGameConfig().addDefault("defaultGameMode", "ADVENTURE");
         _defaultGameMode = GameMode.valueOf(getGame().getGameConfigValue("defaultGameMode", String.class));
+        getGame().saveConfig();
         super.onEnable();
     }
 

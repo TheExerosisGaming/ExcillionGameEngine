@@ -1,9 +1,9 @@
-package me.exerosis.game.engine.implementation.old.game.spleef.abilities;
+package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities;
 
 import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
 import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
 import me.exerosis.packet.player.injection.packets.entities.Entity;
-import me.exerosis.reflection.Reflect;
+import me.exerosis.packet.utils.packet.PacketPlay;
 import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,14 +63,8 @@ public class FallingBlockPacketEntity extends Entity {
         return new PacketPlayOutAttachEntity(0, _block, _stand);
     }
 
-    public Packet getTeleportPacket(Location location) {
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
-        _stand.setLocation(x + 0.5, y - 1.49, z + 0.5, 0, 0);
-        PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(_stand);
-        Reflect.Field(packet, boolean.class, "g").setValue(true);
-        return packet;
+    public Object getTeleportPacket(Location location) {
+        return PacketPlay.Out.EntityTeleport(getEID()[1], location, false);
     }
 
     @Override
