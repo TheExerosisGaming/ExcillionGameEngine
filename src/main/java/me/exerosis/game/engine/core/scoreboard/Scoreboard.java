@@ -1,4 +1,4 @@
-package me.exerosis.game.engine.implementation.old.core.scoreboard;
+package me.exerosis.game.engine.core.scoreboard;
 
 import me.exerosis.packet.utils.ticker.ExTask;
 import org.bukkit.Bukkit;

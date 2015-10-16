@@ -1,18 +1,24 @@
-package me.exerosis.game.engine.implementation.old.event.game.playerdata;
+package me.exerosis.game.engine.implementation.trialtwo.event.player.data;
 
-import me.exerosis.game.engine.implementation.old.event.game.GameEvent;
+import me.exerosis.component.event.Cancellable;
+import me.exerosis.game.engine.implementation.trialtwo.event.GameEvent;
 import org.bukkit.entity.Player;
 
-public class PlayerDataUpdateEvent extends GameEvent {
-
+public class PlayerDataUpdateEvent extends GameEvent implements Cancellable {
+    private final int _type;
     private Object _data;
     private String _id;
     private Player _player;
 
-    public PlayerDataUpdateEvent(String id, Object data, Player player) {
+    public PlayerDataUpdateEvent(String id, Object data, Player player, int type) {
         _id = id;
         _data = data;
+        _type = type;
         setPlayer(player);
+    }
+
+    public int getType() {
+        return _type;
     }
 
     public Object getData() {

@@ -23,10 +23,15 @@ public interface ChatColors {
         return ChatColor.BOLD.toString();
     }
 
-    default String boldDarkGray() {
-        return ChatColor.BOLD.toString() + ChatColor.DARK_GRAY;
+    default String boldDarkBlue() {
+        return bold() + darkBlue();
     }
+
+    default String boldDarkGray() {
+        return bold() + darkGray();
+    }
+
     default String grayBold() {
-        return ChatColor.BOLD.toString() + ChatColor.GRAY;
+        return bold() + gray();
     }
 }

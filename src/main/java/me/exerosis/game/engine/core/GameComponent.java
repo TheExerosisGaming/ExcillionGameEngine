@@ -118,6 +118,7 @@ public class GameComponent implements Component, Runnable, Listener, Enableable 
     @Override
     public void onDisable() {
         unregisterListener();
+        stopTask();
         enabled = false;
     }
 

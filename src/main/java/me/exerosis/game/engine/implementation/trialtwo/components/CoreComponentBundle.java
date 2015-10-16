@@ -9,6 +9,7 @@ import me.exerosis.game.engine.implementation.trialtwo.components.countdown.Post
 import me.exerosis.game.engine.implementation.trialtwo.components.countdown.PreGameCountdown;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.PlayerComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.SpawnpointComponent;
+import me.exerosis.game.engine.implementation.trialtwo.components.player.data.PlayerDataComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.DeathComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.LMSComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.death.SpectateComponent;
@@ -16,6 +17,8 @@ import me.exerosis.game.engine.implementation.trialtwo.components.world.WorldCom
 
 public class CoreComponentBundle {
     private final CooldownManager _cooldownManager;
+    private final PlayerDataComponent _playerDataComponent;
+    private final ScoreboardComponent _scoreboardComponent;
     private LMSComponent _lmsComponent;
     private WorldComponent _worldComponent;
     private CoreGameComponent _coreGameComponent;
@@ -38,12 +41,14 @@ public class CoreComponentBundle {
         _chatComponent = new ChatComponent(game);
         _eventComponent = new EventComponent(game);
         _cooldownManager = new CooldownManager(game);
+        _playerDataComponent = new PlayerDataComponent(game);
 
         _spawnpointComponent = new SpawnpointComponent(game, _worldComponent);
         _playerComponent = new PlayerComponent(game, _spawnpointComponent, _coreGameComponent);
         _spectateComponent = new SpectateComponent(game, _playerComponent);
         _voidLevelComponent = new VoidLevelComponent(game, _spectateComponent, _worldComponent, _deathComponent);
         _lmsComponent = new LMSComponent(game, _spectateComponent, _coreGameComponent, _spawnpointComponent);
+        _scoreboardComponent = new ScoreboardComponent(game, _spectateComponent, _coreGameComponent);
 
         game.addComponent(_coreGameComponent);
         game.addComponent(_worldComponent);

@@ -46,12 +46,6 @@ public class BlockDropComponent extends GameComponent {
         super.onEnable();
     }
 
-    @Override
-    public void onDisable() {
-        stopTask();
-        super.onDisable();
-    }
-
     @EventHandler
     public void onLand(EntityChangeBlockEvent event) {
         if (event.getEntityType().equals(EntityType.FALLING_BLOCK))

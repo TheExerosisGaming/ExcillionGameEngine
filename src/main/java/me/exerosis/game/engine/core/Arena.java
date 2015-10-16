@@ -7,7 +7,7 @@ import me.exerosis.game.engine.core.factory.ConfigurationGameFactory;
 public class Arena extends SystemHolder {
     @Override
     public void setFactory(SystemFactory factory) {
-        if (!factory.getClass().isAssignableFrom(ConfigurationGameFactory.class))
+        if (!(factory instanceof ConfigurationGameFactory))
             System.err.println("Factory has to be an instance off ConfigurationGameFactory!");
         super.setFactory(factory);
     }

@@ -1,4 +1,4 @@
-package me.exerosis.game.engine.implementation.old.core.scoreboard;
+package me.exerosis.game.engine.core.scoreboard;
 
 import me.exerosis.reflection.Reflect;
 import me.exerosis.reflection.ReflectClass;
