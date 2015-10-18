@@ -15,7 +15,7 @@ public class PreGameCountdown extends Countdown {
         super(game.getGameConfigValue("preGameCountDownTime", Integer.class));
         addExtension(new StartGameStateExtension(this, game, GameState.PRE_GAME));
         addExtension(new SetGameStateExtension(this, game, GameState.IN_GAME));
-        addExtension(new ScoreboardExtension(this, game, scoreboardComponent));
+        addExtension(new ScoreboardExtension(this, game, scoreboardComponent, "time", "status", "Starts in:"));
         addExtension(new TitleExtension(this, game) {
             @Override
             public Pair<String, String> mod(int time) {

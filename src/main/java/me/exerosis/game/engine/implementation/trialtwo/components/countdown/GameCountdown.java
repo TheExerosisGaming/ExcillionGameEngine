@@ -12,6 +12,6 @@ public class GameCountdown extends me.exerosis.game.engine.core.countdown.Countd
         super(game.getGameConfigValue("gameCountDownTime", Integer.class));
         addExtension(new StartGameStateExtension(this, game, GameState.IN_GAME));
         addExtension(new SetGameStateExtension(this, game, GameState.POST_GAME));
-        addExtension(new ScoreboardExtension(this, game, scoreboardComponent));
+        addExtension(new ScoreboardExtension(this, game, scoreboardComponent, "time", "status", "Ends in:"));
     }
 }

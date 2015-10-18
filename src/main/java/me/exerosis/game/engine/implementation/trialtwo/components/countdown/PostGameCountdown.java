@@ -15,6 +15,6 @@ public class PostGameCountdown extends Countdown {
         addExtension(new StartGameStateExtension(this, game, GameState.POST_GAME));
         addExtension(new SetGameStateExtension(this, game, GameState.RESTARTING));
         addExtension(new TitleExtension(this, game));
-        addExtension(new ScoreboardExtension(this, game, scoreboardComponent));
+        addExtension(new ScoreboardExtension(this, game, scoreboardComponent, "time", "status", "Lobby in:"));
     }
 }

@@ -146,16 +146,12 @@ public class CoreComponentBundle {
     }
 }
    /*
-
-     components.add(new LivesComponent());
+        components.add(new LivesComponent());
         components.add(new WinnersComponent());
-
-
         components.add(new LMSComponent());
         components.add(new PlayerDataComponent(playerData));
-
         components.add(new CommandExecutorComponent());
         components.add(new ScoreboardComponent());
-
         components.add(new RewardComponent());
-        components.addAll(new PauseComponentBundle().getComponents());*/
+        components.addAll(new PauseComponentBundle().getComponents());
+   */
