@@ -21,29 +21,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScoreboardComponent extends GameComponent implements ChatColors {
+    private final Integer _startPlayers;
     private SpectateComponent _spectateComponent;
-    private CoreGameComponent _coreComponent;
     private Map<Player, Scoreboard> _scoreboards = new HashMap<>();
 
-    public ScoreboardComponent(Game game, SpectateComponent spectateComponent, CoreGameComponent coreComponent) {
+    public ScoreboardComponent(Game game, SpectateComponent spectateComponent) {
         super(game);
         _spectateComponent = spectateComponent;
-        _coreComponent = coreComponent;
+        _startPlayers = getGame().getGameConfigValue("startPlayers", Integer.class);
     }
 
 
-    @EventHandler
+    @EventListener
     public void onDataTransfer(PlayerDataLoadEvent event) {
         Scoreboard scoreboard = new Scoreboard(boldDarkBlue() + "Excillion");
         PlayerData data = event.getData();
 
         scoreboard.addLine(boldDarkBlue() + "Next Game:", "nextGame");
-        //scoreboard.addLine(gray() + getGame()., "game");
+        scoreboard.addLine(gray() + getGame().getName(), "game");
 
         scoreboard.addBlank();
         scoreboard.addLine(boldDarkBlue() + "Players:", "players");
 
-        scoreboard.addLine(gray() + (_spectateComponent.isEnabled() ? _spectateComponent.getNumberPlayers() : getPlayers().size()) + "/" + _coreComponent.getStartPlayers(), "playerNum");
+        scoreboard.addLine(gray() + (_spectateComponent.isEnabled() ? _spectateComponent.getNumberPlayers() : getPlayers().size()) + "/" + _startPlayers, "playerNum");
 
         scoreboard.addBlank();
         scoreboard.addLine(boldDarkBlue() + "Entering in:", "status");
@@ -80,7 +80,7 @@ public class ScoreboardComponent extends GameComponent implements ChatColors {
     }
 
     private void updatePlayerCount() {
-        String newLine = gray() + _spectateComponent.getNumberPlayers() + '/' + _coreComponent.getStartPlayers();
+        String newLine = gray() + _spectateComponent.getNumberPlayers() + '/' + _startPlayers;
 
         for (Player player : getPlayers()) {
             Scoreboard scoreboard = _scoreboards.get(player);

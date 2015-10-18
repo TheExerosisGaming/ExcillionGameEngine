@@ -2,7 +2,6 @@ package me.exerosis.game.engine.implementation.trialtwo.components.player;
 
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
-import me.exerosis.game.engine.implementation.trialtwo.components.CoreGameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerClearEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -17,13 +16,13 @@ import org.bukkit.potion.PotionEffect;
 
 public class PlayerComponent extends GameComponent {
     private SpawnpointComponent _spawnpointComponent;
-    private CoreGameComponent _coreGameComponent;
     private GameMode _defaultGameMode;
+    private int _maxPlayers;
 
-    public PlayerComponent(Game game, SpawnpointComponent spawnpointComponent, CoreGameComponent coreGameComponent) {
+    public PlayerComponent(Game game, SpawnpointComponent spawnpointComponent) {
         super(game);
         _spawnpointComponent = spawnpointComponent;
-        _coreGameComponent = coreGameComponent;
+        _maxPlayers = getGame().getGameConfigValue("maxPlayers", Integer.class);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class PlayerComponent extends GameComponent {
 
     @EventHandler
     public void onPreLogin(PlayerLoginEvent event) {
-        if (getPlayers().size() >= _coreGameComponent.getMaxPlayers())
+        if (getPlayers().size() >= _maxPlayers)
             event.disallow(Result.KICK_OTHER, String.valueOf(ChatColor.RED) + ChatColor.BOLD + "The game is full!");
     }
 
@@ -75,5 +74,9 @@ public class PlayerComponent extends GameComponent {
 
     public GameMode getDefaultGameMode() {
         return _defaultGameMode;
+    }
+
+    public int getMaxPlayers() {
+        return _maxPlayers;
     }
 }

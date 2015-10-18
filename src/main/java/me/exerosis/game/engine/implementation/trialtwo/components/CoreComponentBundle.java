@@ -19,23 +19,22 @@ public class CoreComponentBundle {
     private final CooldownManager _cooldownManager;
     private final PlayerDataComponent _playerDataComponent;
     private final ScoreboardComponent _scoreboardComponent;
-    private LMSComponent _lmsComponent;
-    private WorldComponent _worldComponent;
-    private CoreGameComponent _coreGameComponent;
-    private DeathComponent _deathComponent;
-    private ChatComponent _chatComponent;
-    private EventComponent _eventComponent;
-    private SpawnpointComponent _spawnpointComponent;
-    private PlayerComponent _playerComponent;
-    private SpectateComponent _spectateComponent;
-    private VoidLevelComponent _voidLevelComponent;
-    private LobbyCountdown _lobbyCountdown;
-    private PreGameCountdown _preGameCountdown;
-    private GameCountdown _gameCountdown;
-    private PostGameCountdown _postGameCountdown;
+    private final LMSComponent _lmsComponent;
+    private final WorldComponent _worldComponent;
+    private final CoreGameComponent _coreGameComponent;
+    private final DeathComponent _deathComponent;
+    private final ChatComponent _chatComponent;
+    private final EventComponent _eventComponent;
+    private final SpawnpointComponent _spawnpointComponent;
+    private final PlayerComponent _playerComponent;
+    private final SpectateComponent _spectateComponent;
+    private final VoidLevelComponent _voidLevelComponent;
+    private final LobbyCountdown _lobbyCountdown;
+    private final PreGameCountdown _preGameCountdown;
+    private final GameCountdown _gameCountdown;
+    private final PostGameCountdown _postGameCountdown;
 
     public CoreComponentBundle(Game game) {
-        _coreGameComponent = new CoreGameComponent(game);
         _worldComponent = new WorldComponent(game);
         _deathComponent = new DeathComponent(game);
         _chatComponent = new ChatComponent(game);
@@ -44,29 +43,46 @@ public class CoreComponentBundle {
         _playerDataComponent = new PlayerDataComponent(game);
 
         _spawnpointComponent = new SpawnpointComponent(game, _worldComponent);
-        _playerComponent = new PlayerComponent(game, _spawnpointComponent, _coreGameComponent);
+        _playerComponent = new PlayerComponent(game, _spawnpointComponent);
         _spectateComponent = new SpectateComponent(game, _playerComponent);
         _voidLevelComponent = new VoidLevelComponent(game, _spectateComponent, _worldComponent, _deathComponent);
-        _lmsComponent = new LMSComponent(game, _spectateComponent, _coreGameComponent, _spawnpointComponent);
-        _scoreboardComponent = new ScoreboardComponent(game, _spectateComponent, _coreGameComponent);
+        _lmsComponent = new LMSComponent(game, _spectateComponent);
+        _coreGameComponent = new CoreGameComponent(game, _spectateComponent, _spawnpointComponent);
+        _scoreboardComponent = new ScoreboardComponent(game, _spectateComponent);
 
-        game.addComponent(_coreGameComponent);
+        //Countdowns
+        _lobbyCountdown = new LobbyCountdown(game, _spawnpointComponent, _scoreboardComponent);
+        _preGameCountdown = new PreGameCountdown(game, _scoreboardComponent);
+        _gameCountdown = new GameCountdown(game, _scoreboardComponent);
+        _postGameCountdown = new PostGameCountdown(game, _scoreboardComponent);
+        //
+
         game.addComponent(_worldComponent);
+        game.addComponent(_deathComponent);
         game.addComponent(_chatComponent);
         game.addComponent(_eventComponent);
+        game.addComponent(_coreGameComponent);
+        game.addComponent(_playerDataComponent);
+        game.addComponent(_coreGameComponent);
         game.addComponent(_spawnpointComponent);
         game.addComponent(_playerComponent);
-        game.addComponent(_cooldownManager);
-
-        _lobbyCountdown = new LobbyCountdown(game, _coreGameComponent, _spawnpointComponent);
-        _preGameCountdown = new PreGameCountdown(game);
-        _gameCountdown = new GameCountdown(game);
-        _postGameCountdown = new PostGameCountdown(game);
+        game.addComponent(_spectateComponent);
+        game.addComponent(_voidLevelComponent);
+        game.addComponent(_lmsComponent);
+        game.addComponent(_scoreboardComponent);
 
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _lmsComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _voidLevelComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _deathComponent);
         game.addComponent(GameState.PRE_GAME, GameState.RESTARTING, _spectateComponent);
+    }
+
+    public PlayerDataComponent getPlayerDataComponent() {
+        return _playerDataComponent;
+    }
+
+    public ScoreboardComponent getScoreboardComponent() {
+        return _scoreboardComponent;
     }
 
     public CooldownManager getCooldownManager() {
@@ -130,10 +146,6 @@ public class CoreComponentBundle {
     }
 }
    /*
-           Map<String, Object> playerData = new HashMap<>();
-        playerData.put("Coins", 100);
-        playerData.put("Exp", 200);
-        playerData.put("Kits", "D:N:N");
 
      components.add(new LivesComponent());
         components.add(new WinnersComponent());

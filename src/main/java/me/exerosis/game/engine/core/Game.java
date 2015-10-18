@@ -102,4 +102,8 @@ public class Game implements ComponentSystem {
     public String toString() {
         return _name;
     }
+
+    public String getName() {
+        return _name;
+    }
 }

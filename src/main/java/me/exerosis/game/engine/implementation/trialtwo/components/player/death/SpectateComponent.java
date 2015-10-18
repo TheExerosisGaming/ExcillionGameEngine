@@ -1,17 +1,12 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.player.death;
 
-import me.exerosis.component.event.EventListener;
-import me.exerosis.component.event.Priority;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import me.exerosis.game.engine.implementation.trialtwo.components.player.PlayerComponent;
-import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerKilledEvent;
 import me.exerosis.game.engine.implementation.trialtwo.event.player.PlayerSpectateEvent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
 
@@ -27,20 +22,10 @@ public class SpectateComponent extends GameComponent {
         _playerComponent = playerComponent;
     }
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onJoin(PlayerJoinEvent event) {
-        setSpectating(event.getPlayer());
-    }
-
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         if (_spectatingPlayers.contains(event.getPlayer()))
             _spectatingPlayers.remove(event.getPlayer());
-    }
-
-    @EventListener(priority = Priority.HIGHEST)
-    public void onDeath(PlayerKilledEvent event) {
-        setSpectating(event.getPlayer());
     }
 
     //Primary Methods
@@ -53,7 +38,6 @@ public class SpectateComponent extends GameComponent {
             return;
 
         callEvent(new PlayerSpectateEvent(player), event -> {
-            System.out.println(event.isCancelled());
             if (event.isCancelled())
                 return;
             _playerComponent.clearPlayer(player);

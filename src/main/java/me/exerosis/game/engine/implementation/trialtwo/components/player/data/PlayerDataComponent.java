@@ -70,6 +70,7 @@ public class PlayerDataComponent extends GameComponent {
 
     @Override
     public void onEnable() {
+        System.out.println("excuting!");
         registerListener();
         getPlayers().forEach(this::loadPlayerData);
         super.onEnable();
@@ -84,6 +85,7 @@ public class PlayerDataComponent extends GameComponent {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        System.out.println("excuting!");
         savePlayerData(event.getPlayer());
     }
 
