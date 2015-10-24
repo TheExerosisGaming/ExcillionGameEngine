@@ -10,6 +10,8 @@
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/me/exerosis/game/engine/implementation/old" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/me/exerosis/game/engine/implementation/trialtwo/components/countdown/countdowns" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/me/exerosis/game/engine/implementation/trialtwo/components/player/death/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/me/exerosis/game/engine/implementation/trialtwo/games/deathmatch/armor" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/me/exerosis/game/engine/implementation/trialtwo/games/deathmatch/corpse" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
