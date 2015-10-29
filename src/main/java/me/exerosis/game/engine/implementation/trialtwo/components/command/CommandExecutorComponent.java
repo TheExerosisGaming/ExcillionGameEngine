@@ -1,5 +1,6 @@
 package me.exerosis.game.engine.implementation.trialtwo.components.command;
 
+
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.GameComponent;
 import org.bukkit.Bukkit;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class CommandExecutorComponent extends GameComponent implements CommandExecutor {
     private Map<String, OnCommand> _commands = new HashMap<>();
