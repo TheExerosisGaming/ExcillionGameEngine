@@ -1,6 +1,6 @@
 package me.exerosis.game.engine.util.particles;
 
-import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
+import me.exerosis.packet.injection.handlers.PlayerHandler;
 import me.exerosis.packet.player.injection.packets.PlayParticle;
 import org.bukkit.Location;
 import org.bukkit.Sound;

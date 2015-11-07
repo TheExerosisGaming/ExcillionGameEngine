@@ -4,7 +4,7 @@ import me.exerosis.game.engine.core.Arena;
 import me.exerosis.game.engine.core.factory.RandomGameFactory;
 import me.exerosis.game.engine.implementation.trialtwo.games.runner.RunnerGame;
 import me.exerosis.game.engine.util.FreezePlayerUtil;
-import me.exerosis.packet.player.injection.packet.player.display.displayables.Title;
+import me.exerosis.packet.display.displayables.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

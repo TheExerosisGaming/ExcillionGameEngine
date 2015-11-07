@@ -1,6 +1,6 @@
 package me.exerosis.game.engine.util.particles;
 
-import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
+import me.exerosis.packet.injection.handlers.PlayerHandler;
 import me.exerosis.packet.player.injection.packets.PlayParticle;
 import me.exerosis.packet.utils.ticker.ExTask;
 import org.bukkit.Location;

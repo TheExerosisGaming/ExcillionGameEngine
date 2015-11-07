@@ -1,8 +1,8 @@
 package me.exerosis.game.engine.core.cooldown;
 
-import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
-import me.exerosis.packet.player.injection.packet.player.display.displayables.ActionBar;
-import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
+import me.exerosis.packet.display.displayables.ActionBar;
+import me.exerosis.packet.injection.PacketPlayer;
+import me.exerosis.packet.injection.handlers.PlayerHandler;
 import me.exerosis.packet.utils.ticker.ExTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

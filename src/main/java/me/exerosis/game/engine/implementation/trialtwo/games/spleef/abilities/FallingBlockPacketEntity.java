@@ -1,8 +1,8 @@
 package me.exerosis.game.engine.implementation.trialtwo.games.spleef.abilities;
 
-import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
-import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
-import me.exerosis.packet.player.injection.packets.entities.Entity;
+import me.exerosis.packet.entities.Entity;
+import me.exerosis.packet.injection.PacketPlayer;
+import me.exerosis.packet.injection.handlers.PlayerHandler;
 import me.exerosis.packet.utils.packet.PacketPlay;
 import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Location;

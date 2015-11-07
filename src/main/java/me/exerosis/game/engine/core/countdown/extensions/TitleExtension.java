@@ -3,9 +3,9 @@ package me.exerosis.game.engine.core.countdown.extensions;
 import me.exerosis.game.engine.core.Game;
 import me.exerosis.game.engine.core.countdown.Countdown;
 import me.exerosis.game.engine.core.countdown.CountdownExtension;
-import me.exerosis.packet.player.injection.packet.player.PacketPlayer;
-import me.exerosis.packet.player.injection.packet.player.display.displayables.Title;
-import me.exerosis.packet.player.injection.packet.player.handlers.PlayerHandler;
+import me.exerosis.packet.display.displayables.Title;
+import me.exerosis.packet.injection.PacketPlayer;
+import me.exerosis.packet.injection.handlers.PlayerHandler;
 import me.exerosis.reflection.data.Pair;
 
 public class TitleExtension extends CountdownExtension {
