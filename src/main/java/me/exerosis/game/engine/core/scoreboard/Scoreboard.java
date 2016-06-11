@@ -1,30 +1,32 @@
 package me.exerosis.game.engine.core.scoreboard;
 
-import me.exerosis.packet.utils.ticker.ExTask;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Scoreboard;
 
-public class Scoreboard implements Runnable {
-    int _index = 0;
-    private int _scoreValue = 99;
-    private int _blankValue;
-    private org.bukkit.scoreboard.Scoreboard _scoreboard;
-    private Objective _objective;
-    private ChatColor _currentColor = ChatColor.RED;
+public class ScoreboardImplementation implements Runnable {
+    private final Objective objective;
+    private final BukkitTask task;
+    private final Scoreboard scoreboard;
+        
+    private int index = 0;
+    private int scoreValue = 99;
+    private int blankValue;
+    private ChatColor currentColor = ChatColor.RED;
 
-    public Scoreboard(String name) {
-        _scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        _objective = _scoreboard.registerNewObjective(name, "dummy");
-        _objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        ExTask.startTask(this, 20, 10);
+    public Scoreboard(String name, Plugin plugin) {
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        objective = scoreboard.registerNewObjective(name, "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        task = Bukkit.getScheduler().runTaskTimer(plugin, this, 20, 0);
     }
 
     public String addBlank() {
-        String id = "blank" + _blankValue++;
+        String id = "blank" + blankValue++;
         addLine(" ", id);
         return id;
     }
@@ -32,15 +34,15 @@ public class Scoreboard implements Runnable {
     public void addLine(String line, String id) {
         if (line.length() > 16)
             throw new IllegalArgumentException("Line too long: " + line);
-        Team team = _scoreboard.registerNewTeam(id);
+        Team team = scoreboard.registerNewTeam(id);
         team.setSuffix(line);
         String name = getNextEntryName();
         team.addEntry(name);
-        _objective.getScore(name).setScore(_scoreValue--);
+        objective.getScore(name).setScore(scoreValue--);
     }
 
     public void editLine(String line, String id) {
-        Team team = _scoreboard.getTeam(id);
+        Team team = scoreboard.getTeam(id);
         if (team != null)
             team.setSuffix(line);
         else
@@ -48,32 +50,32 @@ public class Scoreboard implements Runnable {
     }
 
     public void removeLine(String id) {
-        _scoreboard.getTeam(id).unregister();
+        scoreboard.getTeam(id).unregister();
     }
 
     public void showTo(Player player) {
-        player.setScoreboard(_scoreboard);
+        player.setScoreboard(scoreboard);
     }
 
     @Override
     public void run() {
-        for (Team team : _scoreboard.getTeams())
+        for (Team team : scoreboard.getTeams())
             team.setPrefix(getNextColor());
     }
 
     private String getNextColor() {
-        if (_currentColor.equals(ChatColor.RED))
-            _currentColor = ChatColor.BLUE;
+        if (currentColor.equals(ChatColor.RED))
+            currentColor = ChatColor.BLUE;
         else
-            _currentColor = ChatColor.RED;
-        return _currentColor.toString();
+            currentColor = ChatColor.RED;
+        return currentColor.toString();
     }
 
     private String getNextEntryName() {
         StringBuilder nextEntry = new StringBuilder();
         ChatColor[] values = ChatColor.values();
-        int left = _index % (values.length - 1);
-        int times = (_index - left) / (values.length - 1);
+        int left = index % (values.length - 1);
+        int times = (index - left) / (values.length - 1);
 
         if (times > 0) {
             if (times > 3)
@@ -83,16 +85,20 @@ public class Scoreboard implements Runnable {
             else if (times == 2)
                 nextEntry.append(ChatColor.UNDERLINE);
         }
-        _index++;
+        index++;
         return nextEntry.append(values[left]).toString();
+    }
+    
+    public void shutdown(){
+        task.cancel();
     }
 
     //Getters and setters.
-    public org.bukkit.scoreboard.Scoreboard getScoreboard() {
-        return _scoreboard;
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 
     public Objective getObjective() {
-        return _objective;
+        return objective;
     }
 }
